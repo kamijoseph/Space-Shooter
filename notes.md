@@ -18,3 +18,5 @@
     - ptgame.quit() --> opposite of initialization
 
 ## 4. creating surfaces (this are like images and drawings on the display surface)
+    - player (space ship) surface
+    - stars surfaces
