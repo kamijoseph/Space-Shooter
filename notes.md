@@ -17,4 +17,4 @@
     - pygame.QUIT event
     - ptgame.quit() --> opposite of initialization
 
-## 4.
+## 4. creating surfaces (this are like images and drawings on the display surface)
