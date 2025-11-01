@@ -20,13 +20,13 @@ x, y = 100, 150
 # stars surface
 star_surf = pygame.image.load(join("images", "star.png")).convert_alpha()
 star_positions = [(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)) for _ in range(20)]
-
+ 
 
 
 running = True
 while running:
     # event loop
-    for event in pygame.event.get():
+    for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             running = False
 
@@ -41,7 +41,6 @@ while running:
         )
 
     # displaying the player surface
-    x += 0.5
     display_surface.blit(player_surf, (x, y))
 
     
