@@ -19,7 +19,7 @@ FPS = 120
 x, y = 100, 150
 player_surf = pygame.image.load(join("images", "player.png")).convert_alpha()
 player_rect = player_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-player_direction = pygame.math.Vector2(1, 1)
+player_direction = pygame.math.Vector2(0, 0)
 player_speed = 300
 
 
@@ -39,11 +39,25 @@ laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT - 20))
 
 running = True
 while running:
+    # delta time (dt)
     dt = clock.tick() / 1000
+
     # event loop
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             running = False
+        
+    # user inputs
+    keys = pygame.key.get_pressed()
+    # moving left and righht
+    player_direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+    # moving up and down
+    player_direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+    # handling diagonal inconsistent speed
+    player_direction = player_direction.normalize() if player_direction else player_direction
+
+    # moving player with input
+    player_rect.center += player_direction * player_speed * dt
 
     # draw the game
     display_surface.fill("black")
@@ -55,22 +69,9 @@ while running:
             position
         )
     
-    # displaying meteor and laser
+    # displaying ship, meteor and laser
     display_surface.blit(meteor_surf, meteor_rect)
     display_surface.blit(laser_surf, laser_rect)
-
-    # top and bottom wall touch 
-    if player_rect.bottom > WINDOW_HEIGHT or player_rect.top < 0:
-        player_direction.y *= -1
-    
-    # right and left wall touch
-    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
-        player_direction.x *= -1
-    
-    # moving the player with direction, speed and delta time
-    player_rect.center += player_direction * player_speed * dt
-
-    # displaying the player
     display_surface.blit(player_surf, player_rect)
 
     pygame.display.update()
