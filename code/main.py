@@ -19,7 +19,8 @@ FPS = 120
 x, y = 100, 150
 player_surf = pygame.image.load(join("images", "player.png")).convert_alpha()
 player_rect = player_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-player_direction = pygame.math.Vector2(20, -10)
+player_direction = pygame.math.Vector2(1, 1)
+player_speed = 300
 
 
 # stars surface
@@ -38,8 +39,7 @@ laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT - 20))
 
 running = True
 while running:
-    dt = clock.tick(FPS)
-    print(dt)
+    dt = clock.tick() / 1000
     # event loop
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
@@ -59,8 +59,16 @@ while running:
     display_surface.blit(meteor_surf, meteor_rect)
     display_surface.blit(laser_surf, laser_rect)
 
-    # movin the player
-    player_rect.center += player_direction
+    # top and bottom wall touch 
+    if player_rect.bottom > WINDOW_HEIGHT or player_rect.top < 0:
+        player_direction.y *= -1
+    
+    # right and left wall touch
+    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
+        player_direction.x *= -1
+    
+    # moving the player with direction, speed and delta time
+    player_rect.center += player_direction * player_speed * dt
 
     # displaying the player
     display_surface.blit(player_surf, player_rect)
