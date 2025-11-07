@@ -17,6 +17,7 @@ pygame.display.set_caption("Space Shooter Game")
 x, y = 100, 150
 player_surf = pygame.image.load(join("images", "player.png")).convert_alpha()
 player_rect = player_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+player_direction = 1
 
 
 # stars surface
@@ -29,7 +30,7 @@ meteor_rect = meteor_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 
 
 # laser surface
 laser_surf = pygame.image.load(join("images", "laser.png")).convert_alpha()
-laser_rect = laser_surf.get_frect(bottomleft = ((0 + 20), (WINDOW_HEIGHT - 20)))
+laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT - 20))
  
 
 
@@ -43,28 +44,25 @@ while running:
     # draw the game
     display_surface.fill("black")
 
-    # displaying a meteor
-    display_surface.blit(meteor_surf, meteor_rect)
-
-    # display the laser
-    display_surface.blit(laser_surf, laser_rect)
-
     # displaying the stars surface
     for position in star_positions:
         display_surface.blit(
             star_surf,
             position
         )
+    
+    # displaying meteor and laser
+    display_surface.blit(meteor_surf, meteor_rect)
+    display_surface.blit(laser_surf, laser_rect)
 
-    # displaying the player surface
-    if player_rect.right < WINDOW_WIDTH:
-        player_rect.left += 0.5
+    # movin the player
+    player_rect.x += player_direction * 0.4
+    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
+        player_direction *= -1
+    # displaying the player
     display_surface.blit(player_surf, player_rect)
 
-
-    
     pygame.display.update()
     
-
 
 pygame.quit()
