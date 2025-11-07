@@ -12,6 +12,8 @@ WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Space Shooter Game")
+clock = pygame.time.Clock()
+FPS = 24
 
 # player surfaces
 x, y = 100, 150
@@ -36,6 +38,7 @@ laser_rect = laser_surf.get_frect(bottomleft = (20, WINDOW_HEIGHT - 20))
 
 running = True
 while running:
+    clock.tick(FPS)
     # event loop
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
@@ -56,9 +59,8 @@ while running:
     display_surface.blit(laser_surf, laser_rect)
 
     # movin the player
-    player_rect.x += player_direction * 0.4
-    if player_rect.right > WINDOW_WIDTH or player_rect.left < 0:
-        player_direction *= -1
+    player_rect.x += 100
+
     # displaying the player
     display_surface.blit(player_surf, player_rect)
 
