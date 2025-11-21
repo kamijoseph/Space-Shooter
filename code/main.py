@@ -67,6 +67,9 @@ class Meteor(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_frect(center = pos)
 
+    def update(self, dt):
+        self.rect.centery += 400 * dt
+
 # initialise
 pygame.init()
 
@@ -103,8 +106,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == meteor_event:
-            x, y = randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)
-            Meteor(meteor_surf, (x, y), all_sprites)
+            x = randint(0, WINDOW_WIDTH)
+            Meteor(meteor_surf, (x, 0), all_sprites)
 
     all_sprites.update(dt)
 
