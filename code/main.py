@@ -2,7 +2,7 @@
 # pygame space shooter game
 import pygame
 from os.path import join
-from random import randint
+from random import randint, uniform
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups):
@@ -66,9 +66,15 @@ class Meteor(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_frect(center = pos)
+        self.start_time = pygame.time.get_ticks()
+        self.lifetime = 3000
+        self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
+        self.speed = randint(350, 450)
 
     def update(self, dt):
-        self.rect.centery += 400 * dt
+        self.rect.center += self.direction * self.speed * dt
+        if pygame.time.get_ticks() - self.start_time >= self.lifetime:
+            self.kill()
 
 # initialise
 pygame.init()
@@ -106,7 +112,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == meteor_event:
-            x = randint(0, WINDOW_WIDTH)
+            x, y = randint(0, WINDOW_WIDTH), randint(-200, -100)
             Meteor(meteor_surf, (x, 0), all_sprites)
 
     all_sprites.update(dt)
