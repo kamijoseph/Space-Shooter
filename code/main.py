@@ -55,6 +55,13 @@ class Laser(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_frect(midbottom = pos)
+    
+    def update(self, dt):
+        self.rect.centery -= 400 * dt
+        if self.rect.bottom < 0:
+            self.kill()
+
+
 
 # initialise
 pygame.init()
@@ -71,7 +78,7 @@ x, y = 100, 150
 
 all_sprites = pygame.sprite.Group()
 star_surf = pygame.image.load(join("images", "star.png")).convert_alpha()
-for i in range(20):
+for i in range(50):
     Star(all_sprites, star_surf)
 player = Player(all_sprites)
 
