@@ -9,9 +9,23 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(join("images", "player.png")).convert_alpha()
         self.rect = self.image.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+        self.direction = pygame.Vector2()
+        self.speed = 300
     
     def update(self):
-        print("ship is being updated........")
+        keys = pygame.key.get_pressed()
+
+        # moving left and righht
+        self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+
+        # moving up and down
+        self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+
+        # normalizing direction
+        self.direction = self.direction.normalize() if self.direction else self.direction
+
+        # moving player with input
+        self.rect.center += self.direction * self.speed * dt
 
 # initialise
 pygame.init()
@@ -60,18 +74,6 @@ while running:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             running = False
-        
-    # user inputs
-    # keys = pygame.key.get_pressed()
-    # # moving left and righht
-    # player_direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
-    # # moving up and down
-    # player_direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
-    # # handling diagonal inconsistent speed
-    # player_direction = player_direction.normalize() if player_direction else player_direction
-
-    # # moving player with input
-    # player_rect.center += player_direction * player_speed * dt
 
     all_sprites.update()
 
@@ -88,7 +90,6 @@ while running:
     # displaying ship, meteor and laser
     display_surface.blit(meteor_surf, meteor_rect)
     display_surface.blit(laser_surf, laser_rect)
-    # display_surface.blit(player_surf, player_rect)
     all_sprites.draw(display_surface)
 
     pygame.display.update()
