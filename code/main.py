@@ -29,6 +29,12 @@ class Player(pygame.sprite.Sprite):
         if recent_keys[pygame.K_SPACE]:
             print("fire laser")
 
+class Star(pygame.sprite.Sprite):
+    def __init__(self, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(join("images", "star.png")).convert_alpha()
+        self.rect = self.image.get_frect(center=(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)))
+
 # initialise
 pygame.init()
 
@@ -44,10 +50,8 @@ x, y = 100, 150
 
 all_sprites = pygame.sprite.Group()
 player = Player(all_sprites)
-
-# stars surface
-star_surf = pygame.image.load(join("images", "star.png")).convert_alpha()
-star_positions = [(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)) for _ in range(20)]
+for i in range(20):
+    Star(all_sprites)
 
 # meteor surface
 meteor_surf = pygame.image.load(join("images", "meteor.png")).convert_alpha()
@@ -73,16 +77,7 @@ while running:
 
     # drawing the game
     display_surface.fill("black")
-
-    # displaying the stars surface
-    for position in star_positions:
-        display_surface.blit(
-            star_surf,
-            position
-        )
-        
     all_sprites.draw(display_surface)
-
     pygame.display.update()
     
 
