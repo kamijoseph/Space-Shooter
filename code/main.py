@@ -93,10 +93,11 @@ def collisions():
 
 # display score
 def display_score():
-    current_time = pygame.time.get_ticks()
+    current_time = pygame.time.get_ticks() // 100
     text_surf = font.render(str(current_time), True, (240, 240, 240))
     text_rect = text_surf.get_frect(midbottom = (WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50))
     display_surface.blit(text_surf, text_rect)
+    pygame.draw.rect(display_surface, (240, 240, 240), text_rect.inflate(20, 10).move(0, -8), 5, 10)
 
 # initialise
 pygame.init()
@@ -113,7 +114,7 @@ FPS = 120
 star_surf = pygame.image.load(join("images", "star.png")).convert_alpha()
 meteor_surf = pygame.image.load(join("images", "meteor.png")).convert_alpha()
 laser_surf = pygame.image.load(join("images", "laser.png")).convert_alpha()
-font = pygame.font.Font(join("images", "Oxanium-Bold.ttf"), 20)
+font = pygame.font.Font(join("images", "Oxanium-Bold.ttf"), 40)
 
 # sprites
 all_sprites = pygame.sprite.Group()
