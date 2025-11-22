@@ -76,6 +76,21 @@ class Meteor(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.start_time >= self.lifetime:
             self.kill()
 
+# checking for collisions
+def collisions():
+    global running
+
+    # meteor & player collisions
+    collision_sprites = pygame.sprite.spritecollide(player, meteor_sprites, True)
+    if collision_sprites:
+        running = False
+
+    # meteor & laser collisions
+    for laser in laser_sprites:
+        collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
+        if collided_sprites:
+            laser.kill()
+
 # initialise
 pygame.init()
 
@@ -91,6 +106,8 @@ FPS = 120
 star_surf = pygame.image.load(join("images", "star.png")).convert_alpha()
 meteor_surf = pygame.image.load(join("images", "meteor.png")).convert_alpha()
 laser_surf = pygame.image.load(join("images", "laser.png")).convert_alpha()
+font = pygame.font.Font(join("images", "Oxanium-Bold.ttf"), 20)
+text_surf = font.render("text", True, (240, 240, 240))
 
 # sprites
 all_sprites = pygame.sprite.Group()
@@ -103,7 +120,7 @@ player = Player(all_sprites)
  
 # custom events: meteor event
 meteor_event = pygame.event.custom_type()
-pygame.time.set_timer(meteor_event, 50)
+pygame.time.set_timer(meteor_event, 500)
 
 running = True
 while running:
@@ -119,22 +136,15 @@ while running:
             Meteor(meteor_surf, (x, y), (all_sprites, meteor_sprites))
 
     all_sprites.update(dt)
-
-    # test for collisions --> meteor & player
-    collision_sprites = pygame.sprite.spritecollide(player, meteor_sprites, True)
-    if collision_sprites:
-        print(collision_sprites[0])
-
-    # test for collisions --> meteor & laser
-    for laser in laser_sprites:
-        collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
-        if collided_sprites:
-            laser.kill()
+    collisions()
 
 
     # drawing the game
-    display_surface.fill("black")
+    display_surface.fill("#3a2e3f")
     all_sprites.draw(display_surface)
+    
+    # text
+    display_surface.blit(text_surf,(0, 0))
 
 
     pygame.display.update()
