@@ -76,7 +76,7 @@ class Meteor(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.start_time >= self.lifetime:
             self.kill()
 
-# checking for collisions
+# checking for collision
 def collisions():
     global running
 
